@@ -1,5 +1,6 @@
 local NilMenu = require('model/menu/nil')
 local SimpleMenu = require('model/menu/simple')
+local ConfirmMenu = require('model/menu/confirm')
 
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -23,14 +24,14 @@ function MenuFactory.CreateRegisterMenu(pkt, idx)
 
     local params = ppkt['Menu Parameters']
     if not params then
-        return SimpleMenu:SimpleMenu(menu_id, 0, false, 0)
+        return NilMenu:NilMenu(menu_id)
     end
 
     return SimpleMenu:SimpleMenu(menu_id, idx, true, 0)
 end
 
 --------------------------------------------------------------------------------
-function MenuFactory.CreateExtraMenu(pkt, last_menu, p1, p2)
+function MenuFactory.CreateExtraMenu(pkt, last_menu, idx)
     if not pkt or not last_menu or not packets then
         return NilMenu:NilMenu()
     end
@@ -42,9 +43,10 @@ function MenuFactory.CreateExtraMenu(pkt, last_menu, p1, p2)
     end
 
     if last_menu:Type() == 'SimpleMenu' then
-        if not p1 or not p2 or p2 ~= 0 then
+        if not idx then
             return NilMenu:NilMenu(last_menu:Id())
         else
+            return ConfirmMenu:ConfirmMenu(last_menu:Id(), idx)
         end
     end
 
