@@ -22,7 +22,7 @@ function CommandFactoryTests:SetUp()
     end
 
     function windower.ffxi.get_info()
-        return {zone = 110}
+        return {zone = 78}
     end
 
     function windower.convert_auto_trans()
@@ -66,5 +66,12 @@ function CommandFactoryTests:TestRegisterCommmandCreatedForValidRegister()
     local c = CommandFactory.CreateCommand('register', 'Rossweisse\'s Chamber')
     LuaUnit.assertEquals(c:Type(), 'RegisterCommand')
 end
+
+--------------------------------------------------------------------------------
+function CommandFactoryTests:TestEnterCommmandCreatedForValidEnter()
+    local c = CommandFactory.CreateCommand('enter')
+    LuaUnit.assertEquals(c:Type(), 'EnterCommand')
+end
+
 
 LuaUnit.LuaUnit.run('CommandFactoryTests')

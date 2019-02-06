@@ -91,7 +91,7 @@ function DialogueFactoryTests:TestNilDialogueCreatedWhenFarAway()
 end
 
 --------------------------------------------------------------------------------
-function DialogueFactoryTests:TestNilDialogueCreatedWhenBadItemId()
+function DialogueFactoryTests:TestNilDialogueCreatedWhenBadChamberIdx()
     local items = { { id = 2, index = 1 , count = 1 }, max = 2, count = 1 }
     local pbag = PlayerInventory:PlayerInventory(items)
     local player = MockEntity:MockEntity(1234, 4321, 0, pbag)
@@ -102,7 +102,7 @@ function DialogueFactoryTests:TestNilDialogueCreatedWhenBadItemId()
 end
 
 --------------------------------------------------------------------------------
-function DialogueFactoryTests:TestNilDialogueCreatedWhenBadItemCount()
+function DialogueFactoryTests:TestNilDialogueCreatedWhenBadItemId()
     local items = { { id = 2, index = 1 , count = 1 }, max = 2, count = 1 }
     local pbag = PlayerInventory:PlayerInventory(items)
     local player = MockEntity:MockEntity(1234, 4321, 0, pbag)
@@ -132,6 +132,84 @@ function DialogueFactoryTests:TestRegisterDialogueCreatedWhenValidParams()
     local mob = MockEntity:MockEntity(1234, 4321, 5, bag)
     local dialogue = DialogueFactory.CreateRegisterDialogue(mob, player, { idx = 1, en = 'Test' }, 6)
     LuaUnit.assertEquals(dialogue:Type(), 'RegisterDialogue')
+end
+
+--------------------------------------------------------------------------------
+function DialogueFactoryTests:TestNilDialogueCreatedWhenBadNpc_Enter()
+    local items = { { id = 2, index = 1 , count = 1 }, max = 2, count = 1 }
+    local bag = PlayerInventory:PlayerInventory(items)
+    local entity = MockEntity:MockEntity(1234, 4321, 0, bag)
+    local dialogue = DialogueFactory.CreateEnterDialogue(nil, entity, 6)
+    LuaUnit.assertEquals(dialogue:Type(), 'NilDialogue')
+end
+
+--------------------------------------------------------------------------------
+function DialogueFactoryTests:TestNilDialogueCreatedWhenBadPlayer_Enter()
+    local bag = NilInventory:NilInventory()
+    local entity = MockEntity:MockEntity(1234, 4321, 0, bag)
+    local dialogue = DialogueFactory.CreateEnterDialogue(entity, nil, 6)
+    LuaUnit.assertEquals(dialogue:Type(), 'NilDialogue')
+end
+
+--------------------------------------------------------------------------------
+function DialogueFactoryTests:TestNilDialogueCreatedWhenNilNpc_Enter()
+    local items = { { id = 2, index = 1 , count = 1 }, max = 2, count = 1 }
+    local bag = PlayerInventory:PlayerInventory(items)
+    local entity = MockEntity:MockEntity(1234, 4321, 0, bag)
+    local dialogue = DialogueFactory.CreateEnterDialogue(NilEntity:NilEntity(), entity, 6)
+    LuaUnit.assertEquals(dialogue:Type(), 'NilDialogue')
+end
+
+--------------------------------------------------------------------------------
+function DialogueFactoryTests:TestNilDialogueCreatedWhenNilPlayer_Enter()
+    local bag = NilInventory:NilInventory()
+    local entity = MockEntity:MockEntity(1234, 4321, 0, bag)
+    local dialogue = DialogueFactory.CreateEnterDialogue(entity, NilEntity:NilEntity(), 6)
+    LuaUnit.assertEquals(dialogue:Type(), 'NilDialogue')
+end
+
+--------------------------------------------------------------------------------
+function DialogueFactoryTests:TestNilDialogueCreatedWhenFarAway_Enter()
+    local items = { { id = 2, index = 1 , count = 1 }, max = 2, count = 1 }
+    local pbag = PlayerInventory:PlayerInventory(items)
+    local player = MockEntity:MockEntity(1234, 4321, 0, pbag)
+    local bag = NilInventory:NilInventory()
+    local mob = MockEntity:MockEntity(1234, 4321, 30, bag)
+    local dialogue = DialogueFactory.CreateEnterDialogue(mob, player, 6)
+    LuaUnit.assertEquals(dialogue:Type(), 'NilDialogue')
+end
+
+--------------------------------------------------------------------------------
+function DialogueFactoryTests:TestNilDialogueCreatedWhenBadItemId_Enter()
+    local items = { { id = 2, index = 1 , count = 1 }, max = 2, count = 1 }
+    local pbag = PlayerInventory:PlayerInventory(items)
+    local player = MockEntity:MockEntity(1234, 4321, 0, pbag)
+    local bag = NilInventory:NilInventory()
+    local mob = MockEntity:MockEntity(1234, 4321, 5, bag)
+    local dialogue = DialogueFactory.CreateEnterDialogue(mob, player)
+    LuaUnit.assertEquals(dialogue:Type(), 'NilDialogue')
+end
+
+--------------------------------------------------------------------------------
+function DialogueFactoryTests:TestNilDialogueCreatedWhenFullInventory_Enter()
+    local items = { { id = 2, index = 1 , count = 1 }, max = 2, count = 2 }
+    local pbag = PlayerInventory:PlayerInventory(items)
+    local player = MockEntity:MockEntity(1234, 4321, 0, pbag)
+    local bag = NilInventory:NilInventory()
+    local mob = MockEntity:MockEntity(1234, 4321, 5, bag)
+    local dialogue = DialogueFactory.CreateEnterDialogue(mob, player, 6)
+    LuaUnit.assertEquals(dialogue:Type(), 'NilDialogue')
+end
+
+--------------------------------------------------------------------------------
+function DialogueFactoryTests:TestEnterDialogueCreatedWhenValidParams_Enter()
+    local items = { { id = 6, index = 1 , count = 1 }, max = 2, count = 1 }
+    local pbag = PlayerInventory:PlayerInventory(items)
+    local player = MockEntity:MockEntity(1234, 4321, 0, pbag)
+    local bag = NilInventory:NilInventory()
+    local mob = MockEntity:MockEntity(1234, 4321, 5, bag)
+    local dialogue = DialogueFactory.CreateEnterDialogue(mob, player, 6)
+    LuaUnit.assertEquals(dialogue:Type(), 'EnterDialogue')
 end
 
 LuaUnit.LuaUnit.run('DialogueFactoryTests')

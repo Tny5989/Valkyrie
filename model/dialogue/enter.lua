@@ -7,30 +7,17 @@ local MenuFactory = require('model/menu/factory')
 
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
-local RegisterDialogue = NilDialogue:NilDialogue()
-RegisterDialogue.__index = RegisterDialogue
+local EnterDialogue = NilDialogue:NilDialogue()
+EnterDialogue.__index = EnterDialogue
 
 --------------------------------------------------------------------------------
-local function ParseError(pkt)
-    local error = packets.get_bit_packed(pkt, 32, 40)
-    if error == 0 then
-        log('Chamber free')
-    else
-        log('Chamber occupied')
-    end
-    return error
-end
-
---------------------------------------------------------------------------------
-function RegisterDialogue:RegisterDialogue(target, player, chamber, lamp_id)
+function EnterDialogue:EnterDialogue(target, player, lamp_id)
     local o = NilDialogue:NilDialogue()
     setmetatable(o, self)
     o._target = target
     o._player = player
-    o._chamber = chamber
     o._lamp = lamp_id
-    o._error = 0
-    o._type = 'RegisterDialogue'
+    o._type = 'EnterDialogue'
     o._menu = NilMenu:NilMenu()
     o._interactions = {}
     o._idx = 1
@@ -48,51 +35,44 @@ function RegisterDialogue:RegisterDialogue(target, player, chamber, lamp_id)
 end
 
 --------------------------------------------------------------------------------
-function RegisterDialogue:OnIncomingData(id, pkt)
+function EnterDialogue:OnIncomingData(id, pkt)
     local block = false
     if id == 0x037 then
         block = true
     elseif id == 0x034 or id == 0x032 then
         block = true
-        self._menu = MenuFactory.CreateRegisterMenu(pkt, self._chamber.idx)
+        self._menu = MenuFactory.CreateEnterMenu(pkt)
         self:_AppendInteraction(Choice:Choice())
-    elseif id == 0x05C then
-        block = true
-        self._menu = MenuFactory.CreateExtraMenu(pkt, self._menu, self._chamber.idx)
-        self:_AppendInteraction(Choice:Choice())
-        self._error = ParseError(pkt)
-    elseif id == 0x02A then
+    elseif id == 0x036 then
         block = false
-        if MenuFactory.CreateExtraMenu(pkt, self._menu, self._chamber.idx):Type() == 'NilMenu' then
-            self._on_success()
-        end
+        self._on_success()
     end
 
     return (self._interactions[self._idx]:OnIncomingData(id, pkt) or block)
 end
 
 --------------------------------------------------------------------------------
-function RegisterDialogue:OnOutgoingData(id, pkt)
+function EnterDialogue:OnOutgoingData(id, pkt)
     return self._interactions[self._idx]:OnOutgoingData(id, pkt)
 end
 
 --------------------------------------------------------------------------------
-function RegisterDialogue:Start()
-    log('Registering for ' .. self._chamber.en)
+function EnterDialogue:Start()
+    log('Entering')
     self:_OnSuccess()
 end
 
 --------------------------------------------------------------------------------
-function RegisterDialogue:_AppendInteraction(interaction)
+function EnterDialogue:_AppendInteraction(interaction)
     interaction:SetSuccessCallback(function() self:_OnSuccess() end)
     interaction:SetFailureCallback(function() self._on_failure() end)
     table.insert(self._interactions, interaction)
 end
 
 --------------------------------------------------------------------------------
-function RegisterDialogue:_OnSuccess()
+function EnterDialogue:_OnSuccess()
     self._idx = self._idx + 1
-    local option = self._menu:OptionFor(self._error)
+    local option = self._menu:OptionFor()
     local menu_id = self._menu:Id()
     local next = self._interactions[self._idx]
 
@@ -102,4 +82,4 @@ function RegisterDialogue:_OnSuccess()
     next(data)
 end
 
-return RegisterDialogue
+return EnterDialogue

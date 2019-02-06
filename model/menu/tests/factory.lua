@@ -128,4 +128,57 @@ function MenuFactoryTests:TestNilMenuCreatedWhenLastMenuWasConfirm()
     LuaUnit.assertEquals(menu:Type(), 'NilMenu')
 end
 
+--------------------------------------------------------------------------------
+function MenuFactoryTests:TestNilMenuCreatedWhenBadPacket_Enter()
+    local menu = MenuFactory.CreateEnterMenu()
+    LuaUnit.assertEquals(menu:Type(), 'NilMenu')
+end
+
+--------------------------------------------------------------------------------
+function MenuFactoryTests:TestNilMenuCreatedWhenNoPacketLib_Enter()
+    packets = nil
+    local menu = MenuFactory.CreateEnterMenu({})
+    LuaUnit.assertEquals(menu:Type(), 'NilMenu')
+end
+
+--------------------------------------------------------------------------------
+function MenuFactoryTests:TestNilMenuCreatedWhenBadParse_Enter()
+    function packets.parse(dir, data)
+        return nil
+    end
+
+    local menu = MenuFactory.CreateEnterMenu({})
+    LuaUnit.assertEquals(menu:Type(), 'NilMenu')
+end
+
+--------------------------------------------------------------------------------
+function MenuFactoryTests:TestNilMenuCreatedWhenBadMenuId_Enter()
+    function packets.parse(dir, data)
+        return { ['Menu ID'] = 0, ['Menu Parameters'] = '' }
+    end
+
+    local menu = MenuFactory.CreateEnterMenu({})
+    LuaUnit.assertEquals(menu:Type(), 'NilMenu')
+end
+
+--------------------------------------------------------------------------------
+function MenuFactoryTests:TestNilMenuCreatedWhenMissingMenuParameters_Enter()
+    function packets.parse(dir, data)
+        return { ['Menu ID'] = 1 }
+    end
+
+    local menu = MenuFactory.CreateEnterMenu({}, 9)
+    LuaUnit.assertEquals(menu:Type(), 'NilMenu')
+end
+
+--------------------------------------------------------------------------------
+function MenuFactoryTests:TestSimpleMenuCreatedWhenAllGood_Enter()
+    function packets.parse(dir, data)
+        return { ['Menu ID'] = 1, ['Menu Parameters'] = '' }
+    end
+
+    local menu = MenuFactory.CreateEnterMenu({})
+    LuaUnit.assertEquals(menu:Type(), 'SimpleMenu')
+end
+
 LuaUnit.LuaUnit.run('MenuFactoryTests')
