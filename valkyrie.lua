@@ -15,7 +15,14 @@ local NilCommand = require('command/nil')
 local command = NilCommand:NilCommand()
 
 --------------------------------------------------------------------------------
-local function OnCommandFinished()
+local function OnSuccess()
+    log('success')
+    command = NilCommand:NilCommand()
+end
+
+--------------------------------------------------------------------------------
+local function OnFailure()
+    log('failure')
     command = NilCommand:NilCommand()
 end
 
@@ -26,6 +33,14 @@ end
 
 --------------------------------------------------------------------------------
 local function OnCommand(cmd, p1)
+    if command:Type() == 'NilCommand' then
+        command = CommandFactory.CreateCommand(cmd, p1)
+        command:SetSuccessCallback(OnSuccess)
+        command:SetFailureCallback(OnFailure)
+        command()
+    else
+        log('Already running a complex command')
+    end
 end
 
 --------------------------------------------------------------------------------

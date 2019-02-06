@@ -42,6 +42,13 @@ function MenuFactory.CreateExtraMenu(pkt, last_menu, idx)
         return NilMenu:NilMenu(last_menu:Id())
     end
 
+    -- I don't know what these values mean, but this is what is sent when you are currently timed out from
+    -- entering Einherjar
+    if ppkt['Param 1'] == 1 and ppkt['Param 2'] == 23 and ppkt['Param 3'] == 2964 and ppkt['Param 4'] == 1
+            and ppkt['Message ID'] == 40799 and ppkt['_unknown1'] == 6 then
+        return NilMenu:NilMenu(last_menu:Id())
+    end
+
     if last_menu:Type() == 'SimpleMenu' then
         if not idx then
             return NilMenu:NilMenu(last_menu:Id())

@@ -31,6 +31,13 @@ Chambers.Values = {}
 Chambers.Values['']   = { idx = 0, en = '' }
 
 -- Chambers
+Chambers.Values[01] = { idx = 01, tier = 01, en = 'Rossweisse\'s Chamber' }
+Chambers.Values[02] = { idx = 02, tier = 01, en = 'Grimgerde\'s Chamber' }
+Chambers.Values[03] = { idx = 03, tier = 01, en = 'Siegrune\'s Chamber' }
+Chambers.Values[04] = { idx = 04, tier = 02, en = 'Helmwige\'s Chamber' }
+Chambers.Values[05] = { idx = 05, tier = 02, en = 'Schwertleite\'s Chamber' }
+Chambers.Values[06] = { idx = 06, tier = 02, en = 'Waltraute\'s Chamber' }
+Chambers.Values[07] = { idx = 07, tier = 03, en = 'Ortlinde\'s Chamber' }
 Chambers.Values[08] = { idx = 08, tier = 03, en = 'Gerhilde\'s Chamber' }
 Chambers.Values[09] = { idx = 09, tier = 03, en = 'Brunhilde\'s Chamber' }
 
