@@ -1,6 +1,7 @@
 local NilCommand = require('command/nil')
 local RegisterCommand = require('command/register')
 local EnterCommand = require('command/enter')
+local DropCommand = require('command/drop')
 local Chambers = require('data/chambers')
 local Lamps = require('data/lamps')
 local Npcs = require('data/npcs')
@@ -32,6 +33,13 @@ function CommandFactory.CreateCommand(cmd, p1)
         end
         local npc = Npcs.GetClosest()
         return EnterCommand:EnterCommand(npc.id, lamp.id)
+    elseif cmd == 'drop' then
+        local lamp = Lamps.GetByProperty('en', 'Glowing Lamp')
+        if lamp.id == 0 then
+            log('Unknown lamp')
+            return NilCommand:NilCommand()
+        end
+        return DropCommand:DropCommand(lamp)
     end
 
     return NilCommand:NilCommand()

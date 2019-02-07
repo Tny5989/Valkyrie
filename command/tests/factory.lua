@@ -73,5 +73,11 @@ function CommandFactoryTests:TestEnterCommmandCreatedForValidEnter()
     LuaUnit.assertEquals(c:Type(), 'EnterCommand')
 end
 
+--------------------------------------------------------------------------------
+function CommandFactoryTests:TestDropCommmandCreatedForValidDrop()
+    local c = CommandFactory.CreateCommand('drop')
+    LuaUnit.assertEquals(c:Type(), 'DropCommand')
+end
+
 
 LuaUnit.LuaUnit.run('CommandFactoryTests')
