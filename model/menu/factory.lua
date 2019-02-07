@@ -1,6 +1,7 @@
 local NilMenu = require('model/menu/nil')
 local SimpleMenu = require('model/menu/simple')
 local ConfirmMenu = require('model/menu/confirm')
+local WarpMenu = require('model/menu/warp')
 
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -51,7 +52,7 @@ function MenuFactory.CreateEnterMenu(pkt)
         return NilMenu:NilMenu(menu_id)
     end
 
-    return SimpleMenu:SimpleMenu(menu_id, 1, false, 0)
+    return WarpMenu:WarpMenu(menu_id)
 end
 
 --------------------------------------------------------------------------------
@@ -79,6 +80,10 @@ function MenuFactory.CreateExtraMenu(pkt, last_menu, idx)
         else
             return ConfirmMenu:ConfirmMenu(last_menu:Id(), idx)
         end
+    end
+
+    if last_menu:Type() == 'WarpMenu' then
+        return SimpleMenu:SimpleMenu(last_menu:Id(), 1, false, 0)
     end
 
     return NilMenu:NilMenu(last_menu:Id())

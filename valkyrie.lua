@@ -7,6 +7,7 @@ _addon.commands = {'valk', 'valkyrie'}
 require('logger')
 packets = require('util/packets')
 settings = require('util/settings')
+extdata = require('extdata')
 
 local CommandFactory = require('command/factory')
 local NilCommand = require('command/nil')

@@ -1,6 +1,7 @@
 local EnterDialogue = require('model/dialogue/enter')
 local RegisterDialogue = require('model/dialogue/register')
 local NilDialogue = require('model/dialogue/nil')
+local Chambers = require('data/chambers')
 
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -78,7 +79,19 @@ function DialogueFactory.CreateEnterDialogue(npc, player, item_id)
         return NilDialogue:NilDialogue()
     end
 
-    return EnterDialogue:EnterDialogue(npc, player, item_id)
+    local extdata = player:Bag():ItemExtData(player:Bag():ItemIndex(item_id))
+    if not extdata or not extdata.chamber or extdata.status ~= 'Active' then
+        log('Couldn\'t find a valid lamp')
+        return NilDialogue:NilDialogue()
+    end
+
+    local chamber = Chambers.GetByProperty('en', extdata.chamber .. '\'s Chamber')
+    if chamber.idx == 0 then
+        log('Unknown chamber')
+        return NilDialogue:NilDialogue()
+    end
+
+    return EnterDialogue:EnterDialogue(npc, player, chamber, item_id)
 end
 
 return DialogueFactory

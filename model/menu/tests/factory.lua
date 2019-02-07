@@ -3,6 +3,7 @@ local MenuFactory = require('model/menu/factory')
 local SimpleMenu = require('model/menu/simple')
 local NilMenu = require('model/menu/nil')
 local ConfirmMenu = require('model/menu/confirm')
+local WarpMenu = require('model/menu/warp')
 
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -172,12 +173,22 @@ function MenuFactoryTests:TestNilMenuCreatedWhenMissingMenuParameters_Enter()
 end
 
 --------------------------------------------------------------------------------
-function MenuFactoryTests:TestSimpleMenuCreatedWhenAllGood_Enter()
+function MenuFactoryTests:TestWarpMenuCreatedWhenAllGood_Enter()
     function packets.parse(dir, data)
         return { ['Menu ID'] = 1, ['Menu Parameters'] = '' }
     end
 
     local menu = MenuFactory.CreateEnterMenu({})
+    LuaUnit.assertEquals(menu:Type(), 'WarpMenu')
+end
+
+--------------------------------------------------------------------------------
+function MenuFactoryTests:TestSimpleExtraMenuCreatedWhenAllGood_Enter()
+    function packets.parse(dir, data)
+        return { ['Menu ID'] = 1, ['Menu Parameters'] = '' }
+    end
+
+    local menu = MenuFactory.CreateExtraMenu({}, WarpMenu:WarpMenu())
     LuaUnit.assertEquals(menu:Type(), 'SimpleMenu')
 end
 

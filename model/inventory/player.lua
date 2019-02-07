@@ -40,6 +40,11 @@ function PlayerInventory:ItemIndex(id)
 end
 
 --------------------------------------------------------------------------------
+function PlayerInventory:ItemExtData(idx)
+    return extdata.decode(self._items[idx])
+end
+
+--------------------------------------------------------------------------------
 function PlayerInventory:Type()
     return 'PlayerInventory'
 end
