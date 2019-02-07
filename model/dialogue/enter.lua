@@ -64,7 +64,7 @@ end
 
 --------------------------------------------------------------------------------
 function EnterDialogue:Start()
-    log('Entering')
+    log('Entering ' .. self._chamber.en)
     self:_OnSuccess()
 end
 
