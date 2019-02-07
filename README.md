@@ -10,4 +10,4 @@ Enter                 | //valk enter
 Drop Lamp             | //valk drop
 
 
-\<chamber\> should be replaced with values from [data/chambers.lua](https://github.com/Tny5989/Valkyrie/blob/master/data/chambers.lua).  You can use the auto-translated names.
+\<chamber\> should be replaced with 'en' values from [data/chambers.lua](https://github.com/Tny5989/Valkyrie/blob/master/data/chambers.lua).  You can use the auto-translated names.
