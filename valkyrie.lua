@@ -17,13 +17,11 @@ local command = NilCommand:NilCommand()
 
 --------------------------------------------------------------------------------
 local function OnSuccess()
-    log('success')
     command = NilCommand:NilCommand()
 end
 
 --------------------------------------------------------------------------------
 local function OnFailure()
-    log('failure')
     command = NilCommand:NilCommand()
 end
 

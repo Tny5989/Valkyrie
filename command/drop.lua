@@ -27,6 +27,7 @@ end
 
 --------------------------------------------------------------------------------
 function DropCommand:__call(state)
+    log('Dropping ' .. self._lamp.en)
     local player = EntityFactory.CreatePlayer()
     while player:Bag():ItemCount(self._lamp.id) > 0 do
         local idx = player:Bag():ItemIndex(self._lamp.id)
