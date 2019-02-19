@@ -44,7 +44,11 @@ end
 
 --------------------------------------------------------------------------------
 local function OnIncomingData(id, _, pkt, b, i)
-    return command:OnIncomingData(id, pkt)
+    if not packets.is_duplicate(id, pkt) then
+        return command:OnIncomingData(id, pkt)
+    else
+        return false
+    end
 end
 
 --------------------------------------------------------------------------------
