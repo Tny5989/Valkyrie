@@ -37,7 +37,7 @@ end
 function WarpTests:TestFirstPacketGroupIsWarpPacket()
     local Warp = Warp:Warp()
     local target = MockEntity:MockEntity(1234, 1)
-    local chamber = { x = 1, y = 2, z = 3, uk3 = 4 }
+    local chamber = { x = 1, y = 2, z = 3, r = 4 }
     local data = { target = target, menu = 3, chamber = chamber, uk1 = 1  }
     local pkts = Warp:_GeneratePackets(data)
     LuaUnit.assertEquals(#pkts, 1)
@@ -60,7 +60,7 @@ end
 function WarpTests:TestCallingInjectsPackets()
     local Warp = Warp:Warp()
     local target = MockEntity:MockEntity(1234, 1)
-    local chamber = { x = 1, y = 2, z = 3, uk3 = 4 }
+    local chamber = { x = 1, y = 2, z = 3, r = 4 }
     local data = { target = target, menu = 3, chamber = chamber, uk1 = 1  }
     Warp(data)
     LuaUnit.assertEquals(packets.injectcount, 1)
