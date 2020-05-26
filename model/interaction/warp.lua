@@ -11,7 +11,8 @@ local function CreateWarpPacket(data)
     pkt['Zone'] = data.target:Zone()
     pkt['Menu ID'] = data.menu
     pkt['Target Index'] = data.target:Index()
-    pkt['_unknown3'] = data.chamber.uk3
+    pkt['_unknown2'] = 1
+    pkt['Rotation'] = data.chamber.r
     return pkt
 end
 
